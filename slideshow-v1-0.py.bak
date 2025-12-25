@@ -1,0 +1,429 @@
+#!/usr/bin/env python3
+# Slideshow-V1-0.py - Version V1-0
+# Changes in V1-0:
+# - Switch from /current_image + page reload + polling to MJPEG push stream
+# - Add /stream endpoint that serves multipart/x-mixed-replace JPEG frames
+# - All connected clients receive new frames as the slideshow advances
+# - No client-side timers, no polling, no page reloads
+#
+# Changes for threaded server:
+# - Use ThreadingHTTPServer so each client (especially /stream) runs in its own thread
+# - Allows multiple LAN nodes to view the slideshow simultaneously
+
+import os
+import time
+import random
+import logging
+import logging.handlers
+import argparse
+import threading
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+from socketserver import ThreadingMixIn
+from io import BytesIO
+
+from PIL import Image, ImageDraw, ImageFont, ExifTags
+
+# --- SLIDESHOW CONFIGURATION ---
+IMAGES_PER_DIRECTORY = 50
+TIME_IMAGE_EVERY_N = 10
+SLIDE_DURATION_SECONDS = 10
+IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.gif')
+
+# --- PROJECT DIRECTORY ---
+PROJECT_DIR = os.path.expanduser('~/myProjects/python/slideshow')
+
+# --- LOGGING SETUP ---
+GENERAL_LOG = os.path.join(PROJECT_DIR, 'slideshow.log')
+general_handler = logging.handlers.TimedRotatingFileHandler(
+    GENERAL_LOG, when='midnight', interval=1, backupCount=1, encoding='utf-8'
+)
+general_handler.setLevel(logging.WARNING)
+general_handler.setFormatter(
+    logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+)
+
+DISPLAY_LOG = os.path.join(PROJECT_DIR, 'slideshow-display.log')
+display_handler = logging.handlers.TimedRotatingFileHandler(
+    DISPLAY_LOG, when='midnight', interval=1, backupCount=1, encoding='utf-8'
+)
+display_handler.setLevel(logging.INFO)
+display_handler.setFormatter(
+    logging.Formatter('%(asctime)s - %(message)s')
+)
+
+display_logger = logging.getLogger('display')
+display_logger.setLevel(logging.INFO)
+display_logger.propagate = False
+display_logger.addHandler(display_handler)
+display_logger.info("=== DISPLAY LOG STARTED (V1-0 MJPEG) ===")
+
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.DEBUG)
+stream_handler.setFormatter(
+    logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+)
+
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.DEBUG)
+root_logger.handlers.clear()
+root_logger.addHandler(general_handler)
+root_logger.addHandler(stream_handler)
+
+
+def log_image_display(image_path: str):
+    display_logger.info(image_path)
+
+
+# ======================================================================
+#  RECURSIVE DIRECTORY WALKER
+#  - starting_dirs: roots from slideshowDirectories.txt or preferred file
+#  - skips any directory whose basename is exactly "slideshow_exclude"
+# ======================================================================
+def collect_image_directories(starting_dirs):
+    collected = []
+
+    for start in starting_dirs:
+        if not os.path.isdir(start):
+            logging.warning(f"Invalid directory in slideshowDirectories.txt: {start}")
+            continue
+
+        for root, dirs, files in os.walk(start):
+            # Remove any child dirs named exactly "slideshow_exclude"
+            dirs[:] = [d for d in dirs if d != 'slideshow_exclude']
+            # Root itself might be slideshow_exclude (if someone put it in manually)
+            if os.path.basename(root) == 'slideshow_exclude':
+                continue
+
+            # Does this directory contain at least one image?
+            if any(f.lower().endswith(IMAGE_EXTENSIONS) for f in files):
+                collected.append(root)
+
+    logging.info(f"Collected {len(collected)} image directories from recursive walk")
+    return collected
+
+
+# ======================================================================
+#  GLOBAL FRAME STATE FOR MJPEG PUSH
+# ======================================================================
+current_frame_bytes = None
+current_frame_id = 0
+frame_lock = threading.Lock()
+frame_condition = threading.Condition(frame_lock)
+
+
+def update_current_frame(frame_bytes: bytes, label: str):
+    """
+    Update the global frame and notify all connected MJPEG clients.
+    'label' is used for logging (path or description).
+    """
+    global current_frame_bytes, current_frame_id
+
+    with frame_condition:
+        current_frame_bytes = frame_bytes
+        current_frame_id += 1
+        frame_condition.notify_all()
+
+    log_image_display(label)
+    logging.info(f"Updated frame_id={current_frame_id} label={label}")
+
+
+# ======================================================================
+#  IMAGE GENERATION HELPERS (RETURN BYTES, NOT FILES)
+# ======================================================================
+def make_placeholder_image(text: str) -> bytes:
+    """
+    Create a simple placeholder image with the given text, return JPEG bytes.
+    """
+    img = Image.new('RGB', (1920, 1080), (50, 0, 0))
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.load_default()
+    draw.text((50, 50), text, fill=(255, 255, 255), font=font)
+
+    buf = BytesIO()
+    img.save(buf, format='JPEG', quality=85)
+    return buf.getvalue()
+
+
+def generate_time_frame() -> bytes:
+    """
+    Create a large time display image, return JPEG bytes.
+    """
+    current_time = time.strftime("%I:%M").lstrip("0")
+    logging.info(f"Generating time frame: {current_time}")
+
+    img = Image.new('RGB', (1920, 1080), (0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+
+    try:
+        font = ImageFont.truetype(font_path, 300)
+    except IOError:
+        font = ImageFont.load_default()
+
+    try:
+        bbox = draw.textbbox((0, 0), current_time, font=font)
+        w = bbox[2] - bbox[0]
+        h = bbox[3] - bbox[1]
+    except AttributeError:
+        w, h = draw.textsize(current_time, font=font)
+
+    draw.text(((1920 - w) // 2, (1080 - h) // 2), current_time,
+              font=font, fill=(255, 255, 255))
+
+    buf = BytesIO()
+    img.save(buf, format='JPEG', quality=95)
+    return buf.getvalue()
+
+
+def image_path_to_jpeg_bytes(image_path: str) -> bytes:
+    """
+    Load an image from disk, apply EXIF rotation, convert to RGB JPEG,
+    and return the JPEG bytes. On error, returns a placeholder JPEG.
+    """
+    try:
+        logging.info(f"Serving: {image_path}")
+        img = Image.open(image_path)
+        img.verify()
+        img = Image.open(image_path)
+
+        # EXIF rotation fix
+        try:
+            orientation_tag = None
+            for o in ExifTags.TAGS:
+                if ExifTags.TAGS[o] == 'Orientation':
+                    orientation_tag = o
+                    break
+            exif = img._getexif()
+            if exif and orientation_tag is not None:
+                orient = dict(exif.items()).get(orientation_tag, 1)
+                if orient == 3:
+                    img = img.rotate(180, expand=True)
+                elif orient == 6:
+                    img = img.rotate(270, expand=True)
+                elif orient == 8:
+                    img = img.rotate(90, expand=True)
+        except Exception as e:
+            logging.warning(f"EXIF error: {e}")
+
+        img = img.convert("RGB")
+
+        buf = BytesIO()
+        img.save(buf, format='JPEG', quality=95)
+        return buf.getvalue()
+
+    except Exception as e:
+        logging.error(f"SKIP: {image_path} | {e}")
+        return make_placeholder_image(f"SKIPPED: {os.path.basename(image_path)}")
+
+
+# ======================================================================
+#  MJPEG-CAPABLE HTTP HANDLER
+# ======================================================================
+class SlideshowHTTPRequestHandler(SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/slideshow':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            self.wfile.write(self.get_html_content().encode('utf-8'))
+
+        elif self.path == '/stream':
+            self.handle_mjpeg_stream()
+
+        elif self.path == '/favicon.ico':
+            self.send_response(204)
+            self.end_headers()
+
+        else:
+            self.send_error(404, "Not Found")
+
+    def get_html_content(self):
+        """
+        Simple HTML page: a single <img> bound to the MJPEG stream.
+        No polling, no timers, the browser just follows the multipart stream.
+        """
+        return '''
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Slideshow V1-0 MJPEG</title>
+            <style>
+                html, body {
+                    margin:0; padding:0; width:100%; height:100%;
+                    background:#000; overflow:hidden;
+                }
+                body { display:flex; justify-content:center; align-items:center; }
+                img { width:100vw; height:100vh; object-fit:contain; }
+            </style>
+        </head>
+        <body>
+            <img src="/stream" alt="Slideshow stream">
+        </body>
+        </html>
+        '''.strip()
+
+    def handle_mjpeg_stream(self):
+        """
+        Serve a multipart/x-mixed-replace MJPEG stream.
+        Each connected client receives frames as the slideshow updates.
+        """
+        logging.info("MJPEG client connected")
+
+        self.send_response(200)
+        self.send_header('Content-type', 'multipart/x-mixed-replace; boundary=frame')
+        self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        self.send_header('Pragma', 'no-cache')
+        self.send_header('Expires', '0')
+        self.end_headers()
+
+        boundary = b"--frame\r\n"
+
+        last_frame_id = -1
+
+        try:
+            while True:
+                with frame_condition:
+                    # Wait until there is at least one frame, and a new frame id
+                    while current_frame_bytes is None or current_frame_id == last_frame_id:
+                        frame_condition.wait()
+                    frame = current_frame_bytes
+                    fid = current_frame_id
+
+                # Write MJPEG frame
+                try:
+                    self.wfile.write(boundary)
+                    self.wfile.write(b"Content-Type: image/jpeg\r\n")
+                    self.wfile.write(b"Content-Length: " + str(len(frame)).encode('ascii') + b"\r\n")
+                    self.wfile.write(b"\r\n")
+                    self.wfile.write(frame)
+                    self.wfile.write(b"\r\n")
+                    self.wfile.flush()
+                    last_frame_id = fid
+                except (BrokenPipeError, ConnectionResetError):
+                    logging.info("MJPEG client disconnected (Broken pipe / reset)")
+                    break
+        except Exception as e:
+            logging.warning(f"MJPEG stream exception: {e}")
+
+
+# ======================================================================
+#  SLIDESHOW PRODUCER
+# ======================================================================
+def generate_slideshow_images(directories, time_interval):
+    duration = time_interval
+    total_images_displayed = 0
+
+    # Initial placeholder frame so that early clients see something
+    if not directories:
+        logging.warning("No directories available for slideshow at startup.")
+        placeholder = make_placeholder_image("NO DIRECTORIES")
+        update_current_frame(placeholder, "[NO DIRECTORIES]")
+    else:
+        placeholder = make_placeholder_image("Starting slideshow...")
+        update_current_frame(placeholder, "[STARTUP]")
+
+    while True:
+        if not directories:
+            logging.warning("No directories available for slideshow. Sleeping 5 seconds.")
+            time.sleep(5)
+            continue
+
+        directory = random.choice(directories)
+        logging.info(f"Selected directory: {directory}")
+
+        image_files = []
+        try:
+            for file in os.listdir(directory):
+                if file.lower().endswith(IMAGE_EXTENSIONS):
+                    img_path = os.path.join(directory, file)
+                    image_files.append(img_path)
+        except FileNotFoundError:
+            logging.warning(f"Directory disappeared: {directory}")
+            continue
+
+        if not image_files:
+            logging.warning(f"No images in directory: {directory}")
+            continue
+
+        random.shuffle(image_files)
+        image_files = image_files[:IMAGES_PER_DIRECTORY]
+
+        for image_path in image_files:
+            total_images_displayed += 1
+
+            if total_images_displayed % TIME_IMAGE_EVERY_N == 0:
+                frame_bytes = generate_time_frame()
+                label = "[TIME]"
+            else:
+                frame_bytes = image_path_to_jpeg_bytes(image_path)
+                label = image_path
+
+            update_current_frame(frame_bytes, label)
+            time.sleep(duration)
+
+
+# ======================================================================
+#  THREADED HTTP SERVER
+# ======================================================================
+class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
+    """
+    Threaded HTTP server so each client connection (especially /stream)
+    runs in its own thread. daemon_threads=True ensures handler threads
+    exit when the main thread exits.
+    """
+    daemon_threads = True
+
+
+def load_directories(filepath):
+    if not os.path.exists(filepath):
+        logging.warning(f"File not found: {filepath}")
+        return []
+    with open(filepath) as f:
+        return [line.strip().strip('"') for line in f if line.strip()]
+
+
+def run_server(port=8000):
+    httpd = ThreadingHTTPServer(('', port), SlideshowHTTPRequestHandler)
+    logging.info(f"Server on port {port} (V1-0 MJPEG, threaded)")
+    httpd.serve_forever()
+
+
+# ======================================================================
+#  MAIN
+# ======================================================================
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Slideshow V1-0 — Recursive Photo Viewer with MJPEG push stream",
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument('preferred', nargs='?', help="Guest list: slideshowPreferred<NAME>.txt")
+    args = parser.parse_args()
+
+    # Load starting directories
+    if args.preferred:
+        path = os.path.join(PROJECT_DIR, f'slideshowPreferred{args.preferred}.txt')
+    else:
+        path = os.path.join(PROJECT_DIR, 'slideshowDirectories.txt')
+
+    starting_dirs = load_directories(path)
+
+    if not starting_dirs:
+        print("Error: No starting directories found.")
+        logging.error("No starting directories found. Exiting.")
+        exit(1)
+
+    # Recursive discovery of all image-containing directories,
+    # skipping any subtree whose basename is "slideshow_exclude"
+    directories = collect_image_directories(starting_dirs)
+
+    # Start slideshow worker (producer)
+    threading.Thread(
+        target=generate_slideshow_images,
+        args=(directories, SLIDE_DURATION_SECONDS),
+        daemon=True
+    ).start()
+
+    # Start threaded HTTP server (consumers connect via /slideshow or /stream)
+    run_server()
+

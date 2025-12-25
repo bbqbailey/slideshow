@@ -1,0 +1,84 @@
+SLIDESHOW SYSTEM - USER GUIDE (v3.0)
+====================================
+
+OVERVIEW
+--------
+Smart, guest-ready photo slideshow with:
+- Full images (no cropping)
+- Random up to 40 per folder
+- Guest-specific playlists
+- One-command switching
+- Runs in background
+
+QUICK START
+-----------
+1. Generate full list (first time):
+   slideshowGetDirectories.py
+
+2. Start slideshow:
+   slideshow          # Normal mode
+   slideshow Durand   # Guest mode
+
+FILES (in ~/MyProjects/python/slideshow/)
+----------------------------------------
+slideshow.py                  - Main server
+slideshowGetDirectories.py    - Scans all photos
+slideshowDirectories.txt      - Full list (auto)
+slideshowPreferredDurand.txt  - Guest list
+slideshowPreferredLong.txt    - Guest list
+slideshow_user_guide.txt      - This file
+
+COMMANDS (from anywhere)
+------------------------
+slideshow                    - Normal mode
+slideshow Durand             - Guest: Durand.txt
+slideshow Long               - Guest: Long.txt
+slideshow                    - Back to normal
+
+GUEST MODE SETUP
+----------------
+1. Create list:
+   nano ~/MyProjects/python/slideshow/slideshowPreferredDurand.txt
+
+2. Add directories (quoted):
+   "/media/Photos/Family"
+   "/media/Photos/2023"
+
+3. Save
+
+4. Launch:
+   slideshow Durand
+
+SWITCHING
+---------
+- One command kills old + starts new
+- No manual kill
+- No file copy
+- No restart delay
+
+EXAMPLE
+-------
+slideshowGetDirectories.py    # First time
+slideshow                     # Normal
+slideshow Durand              # Guests arrive
+slideshow                     # Back to normal
+
+CONFIGURATION (in slideshow.py)
+------------------------------
+IMAGES_PER_DIRECTORY = 40
+TIME_IMAGE_EVERY_N   = 10
+SLIDE_DURATION_SECONDS = 5
+
+TROUBLESHOOTING
+---------------
+- No images? Run slideshowGetDirectories.py
+- Wrong list? Check slideshowDirectories.txt
+- Stuck? pkill -f slideshow.py
+
+ADVANCED
+--------
+- Add more: slideshowPreferredKids.txt
+- Use from phone via SSH
+- Wrapper in ~/bin/slideshow
+
+Enjoy your photos!

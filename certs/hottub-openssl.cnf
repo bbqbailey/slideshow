@@ -1,0 +1,24 @@
+[ req ]
+default_bits       = 2048
+prompt             = no
+default_md         = sha256
+distinguished_name = dn
+x509_extensions    = v3_req
+
+[ dn ]
+C  = US
+ST = Georgia
+L  = Alpharetta
+O  = HomeLab
+CN = hottub
+
+[ v3_req ]
+subjectAltName = @alt_names
+basicConstraints = CA:FALSE
+keyUsage = digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+
+[ alt_names ]
+DNS.1 = hottub
+DNS.2 = HotTub
+IP.1  = 192.168.1.208

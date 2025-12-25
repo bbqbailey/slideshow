@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+ 
+import os
+import webbrowser
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+from PIL import Image
+
+class SlideshowHTTPRequestHandler(SimpleHTTPRequestHandler):
+    current_image = 0
+
+    def __init__(self, *args, image_files=None, **kwargs):
+        self.image_files = image_files
+        super().__init__(*args, **kwargs)
+
+    def do_GET(self):
+        if self.path == '/slideshow':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            html_content = '''
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Image Slideshow</title>
+                <style>
+                    body {{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                        background-color: #000;
+                        color: #fff;
+                    }}
+                    img {{
+                        max-width: 80vw;
+                        max-height: 80vh;
+                    }}
+                </style>
+            </head>
+            <body>
+                <img src="/current_image" alt="Slideshow Image">
+                <script>
+                    setTimeout(function() {{
+                        window.location.href = '/slideshow';
+                    }}, 5000);
+                </script>
+            </body>
+            </html>
+            '''
+            self.wfile.write(html_content.encode('utf-8'))
+        elif self.path == '/current_image':
+            if SlideshowHTTPRequestHandler.current_image >= len(self.image_files):
+                SlideshowHTTPRequestHandler.current_image = 0
+            image_path = self.image_files[SlideshowHTTPRequestHandler.current_image]
+            print(f"Attempting to serve image: {image_path} (index: {SlideshowHTTPRequestHandler.current_image})")
+            SlideshowHTTPRequestHandler.current_image += 1
+            print(f"Updated index after increment: {SlideshowHTTPRequestHandler.current_image}")
+            if os.path.isfile(image_path):
+                resized_image_path = self.resize_image(image_path)
+                self.send_response(200)
+                self.send_header('Content-type', 'image/jpeg')
+                self.end_headers()
+                with open(resized_image_path, 'rb') as file:
+                    self.wfile.write(file.read())
+            else:
+                print(f"File not found: {image_path}")
+                self.send_error(404, "File not found")
+        else:
+            self.send_error(404, "File not found")
+
+    def resize_image(self, image_path):
+        base_width = 1200
+        base_height = 900
+        img = Image.open(image_path)
+        img.thumbnail((base_width, base_height), Image.ANTIALIAS)
+        resized_path = '/tmp/resized_image.jpg'
+        img.save(resized_path, "JPEG")
+        return resized_path
+
+def run_server(image_files, port=8000):
+    handler_class = lambda *args, **kwargs: SlideshowHTTPRequestHandler(*args, image_files=image_files, **kwargs)
+    server = HTTPServer(('', port), handler_class)
+    print(f"Serving on port {port}")
+    webbrowser.open(f'http://localhost:{port}/slideshow')
+    server.serve_forever()
+
+def main():
+    directory = '/media/Entertainment/Photos/PictureAlbums/2020-02-22-Sarah-Justin-Wedding'
+
+    if not os.path.isdir(directory):
+        print(f"Directory not found: {directory}")
+        return
+
+    image_files = [os.path.abspath(os.path.join(directory, file)) for file in os.listdir(directory) if file.lower().endswith('.jpg')]
+
+    if not image_files:
+        print("No .jpg files found in the directory.")
+        return
+
+    print("Image files to be served:")
+    for image_file in image_files:
+        print(image_file)
+
+    run_server(image_files)
+
+if __name__ == "__main__":
+    main()
+

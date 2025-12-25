@@ -1,0 +1,4 @@
+2025-12-25 01:01:33,277 - WARNING - MJPEG stream exception: EOF occurred in violation of protocol (_ssl.c:2426)
+2025-12-25 01:02:55,208 - WARNING - MJPEG stream exception: EOF occurred in violation of protocol (_ssl.c:2426)
+2025-12-25 01:03:52,368 - WARNING - MJPEG stream exception: EOF occurred in violation of protocol (_ssl.c:2426)
+2025-12-25 01:05:55,006 - WARNING - MJPEG stream exception: EOF occurred in violation of protocol (_ssl.c:2426)

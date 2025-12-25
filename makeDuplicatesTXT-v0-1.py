@@ -1,0 +1,129 @@
+#!/usr/bin/env python3
+"""
+makeDuplicatesTXT-v0-1.py - Generate duplicates.txt from a base directory (v0-1)
+
+This utility scans a base directory and writes a list of FULL-PATH image
+files into duplicates.txt. Only JPG, JPEG, and PNG files are included.
+
+IMPORTANT:
+- Any file whose basename begins with 'DSC' (case-insensitive) is EXCLUDED.
+- Any excluded DSC file is printed AND logged as "SKIPPED (DSC name)".
+- Any directory named exactly 'slideshow_exclude' is SKIPPED entirely
+  and NOT scanned for files.
+
+USAGE:
+    ./makeDuplicatesTXT-v0-1.py /absolute/path/to/base_directory
+
+EXAMPLE:
+    ./makeDuplicatesTXT-v0-1.py \
+        "/media/Entertainment/Photos/PictureAlbums/2017-Vickies-Pool-Salah-Pat-Vickie-Jim"
+
+Creates: duplicates.txt in the same directory as this script.
+Also creates a timestamped log file: makeDuplicatesTXT-v0-1_YYYYMMDD_HHMMSS.log
+"""
+
+import os
+import sys
+import argparse
+from datetime import datetime
+
+VERSION = "v0-1"
+
+# Allowed extensions (case-sensitive here, but we list all cases)
+VALID_EXTS = {".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG"}
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="makeDuplicatesTXT-v0-1.py - Create duplicates.txt listing full paths of JPG/JPEG/PNG files (v0-1)."
+    )
+    parser.add_argument(
+        "base_directory",
+        nargs="?",
+        help="Absolute path to the directory to scan.",
+    )
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Show program version and exit.",
+    )
+    args = parser.parse_args()
+
+    if args.version:
+        print(f"makeDuplicatesTXT-v0-1.py version {VERSION}")
+        sys.exit(0)
+
+    # Must supply base_directory
+    if not args.base_directory:
+        print("ERROR: Missing required <base_directory> argument.\n")
+        parser.print_help()
+        sys.exit(1)
+
+    base_dir = args.base_directory
+
+    # Must be absolute
+    if not os.path.isabs(base_dir):
+        print(f"ERROR: <base_directory> must be an ABSOLUTE path, not relative: {base_dir}")
+        sys.exit(1)
+
+    # Must exist
+    if not os.path.isdir(base_dir):
+        print(f"ERROR: Directory does not exist: {base_dir}")
+        sys.exit(1)
+
+    # Prepare log filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_filename = f"makeDuplicatesTXT-v0-1_{timestamp}.log"
+
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    duplicates_path = os.path.join(script_dir, "duplicates.txt")
+    log_path = os.path.join(script_dir, log_filename)
+
+    print(f"Base directory: {base_dir}")
+    print(f"Output duplicates: {duplicates_path}")
+    print(f"Log file: {log_path}")
+    print()
+
+    with open(duplicates_path, "w", encoding="utf-8") as dup_out, \
+         open(log_path, "w", encoding="utf-8") as log:
+
+        def log_write(msg: str) -> None:
+            print(msg)
+            log.write(msg + "\n")
+
+        log_write(f"makeDuplicatesTXT-v0-1 starting at {timestamp}")
+        log_write(f"Scanning base directory: {base_dir}")
+        log_write("")
+
+        # Walk directory tree, skipping slideshow_exclude dirs
+        for root, dirs, files in os.walk(base_dir):
+            # <<< IMPORTANT FIX: do NOT descend into slideshow_exclude >>>
+            dirs[:] = [d for d in dirs if d != "slideshow_exclude"]
+
+            for filename in files:
+                fullpath = os.path.join(root, filename)
+
+                # Check extension
+                _, ext = os.path.splitext(filename)
+                if ext not in VALID_EXTS:
+                    continue
+
+                # Check DSC exclusion (case-insensitive)
+                if filename.lower().startswith("dsc"):
+                    log_write(f"SKIPPED (DSC name): {fullpath}")
+                    continue
+
+                # Write to duplicates.txt
+                dup_out.write(fullpath + "\n")
+                log_write(f"INCLUDED: {fullpath}")
+
+        log_write("")
+        log_write("Completed successfully.")
+        log_write(f"duplicates.txt created at: {duplicates_path}")
+
+    print("\nDone.\n")
+
+
+if __name__ == "__main__":
+    main()
+

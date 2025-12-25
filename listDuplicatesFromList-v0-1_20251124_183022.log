@@ -1,0 +1,58 @@
+# listDuplicatesFromList-v0-1 log
+# Started: 2025-11-24 18:30:22.065585
+
+Error: missing <search_root>.
+
+
+listDuplicatesFromList-v0-1.py - List duplicate filenames from duplicates.txt (v0-1)
+
+DESCRIPTION
+    Version: v0-1
+
+    This script is a READ-ONLY duplicate reporter. It does NOT move or modify
+    any files.
+
+    It expects a file named 'duplicates.txt' in the SAME directory as this
+    script. Each non-empty line in duplicates.txt must be a FULL ABSOLUTE
+    PATH to an image file (as produced by makeDuplicatesTXT-v0-1.py).
+
+    You pass a BASE SEARCH ROOT as arg1 (e.g.
+        /media/Entertainment/Photos/PictureAlbums
+    ) and the script will walk that tree ONCE, looking for files whose
+    BASENAME matches any of the basenames from duplicates.txt.
+
+    It then groups by BASENAME and reports ONLY those basenames that were
+    found in 2 or more locations under the search root.
+
+    Example output:
+
+        [GROUP] IMG_1234.jpg (count: 3)
+            /path/A/IMG_1234.jpg
+            /path/B/IMG_1234.jpg
+            /path/C/IMG_1234.jpg
+
+    RULES / BEHAVIOR
+        * Any directory named exactly 'slideshow_exclude' is skipped entirely
+          while walking the search root.
+        * No files are moved, deleted, or changed in any way.
+        * A timestamped log file is created in the script directory:
+              listDuplicatesFromList-v0-1_YYYYMMDD_HHMMSS.log
+          All screen output is also written to this log.
+
+USAGE
+    listDuplicatesFromList-v0-1.py <search_root>
+
+EXAMPLE
+    # duplicates.txt already created by makeDuplicatesTXT-v0-1.py
+    listDuplicatesFromList-v0-1.py /media/Entertainment/Photos/PictureAlbums
+
+OPTIONS
+    <search_root>   REQUIRED. Root directory tree to search for duplicates.
+    --version       Show version and exit.
+
+EXIT CODES
+    0  Success
+    1  Missing search_root / usage error
+    2  search_root not found or not a directory
+    3  duplicates.txt missing or unreadable
+

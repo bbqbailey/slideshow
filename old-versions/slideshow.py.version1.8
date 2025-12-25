@@ -1,0 +1,184 @@
+#!/usr/bin/env python3
+ 
+import os
+import time
+import random
+import logging
+from datetime import datetime
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+from PIL import Image, ImageDraw, ImageFont, ExifTags
+import threading
+
+# Configure logging
+log_filename = os.path.expanduser(f'~/bin/slideshowLogging_{datetime.now().strftime("%Y%m%d_%H%M%S")}.txt')
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+# File handler - logs WARNING and above
+file_handler = logging.FileHandler(log_filename)
+file_handler.setLevel(logging.WARNING)
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+
+# Stream handler - logs DEBUG and above (everything)
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.DEBUG)
+stream_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+
+# Add handlers to the logger
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
+
+class SlideshowHTTPRequestHandler(SimpleHTTPRequestHandler):
+
+    def do_GET(self):
+        if self.path == '/slideshow':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            html_content = self.get_html_content()
+            self.wfile.write(html_content.encode('utf-8'))
+        elif self.path == '/current_image':
+            self.send_response(200)
+            self.send_header('Content-type', 'image/jpeg')
+            self.end_headers()
+            with open('/tmp/resized_image.jpg', 'rb') as file:
+                self.wfile.write(file.read())
+        elif self.path == '/favicon.ico':
+            self.send_response(204)  # No Content
+            self.end_headers()
+        else:
+            self.send_error(404, "File not found")
+
+    def get_html_content(self):
+        html_content = '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Slideshow</title>
+            <style>
+                body {{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #000;
+                    color: #fff;
+                    overflow: hidden;
+                }}
+                img {{
+                    max-width: 100%;
+                    max-height: 100%;
+                }}
+            </style>
+        </head>
+        <body>
+            <div>
+                <img src="/current_image" alt="Slideshow Image">
+            </div>
+            <script>
+                setTimeout(function() {{
+                    window.location.reload(1);
+                }}, 5000);
+            </script>
+        </body>
+        </html>
+        '''
+        return html_content
+
+def generate_slideshow_images(directories, time_interval):
+    total_images_displayed = 0
+    while True:
+        directory = random.choice(directories)
+        logging.info(f"Selected directory: {directory}")
+        image_files = []
+        if os.path.isdir(directory):
+            for file in os.listdir(directory):
+                if file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif')):
+                    image_files.append(os.path.join(directory, file))
+        
+        if not image_files:
+            logging.warning(f"No valid image files found in directory: {directory}")
+            continue
+
+        random.shuffle(image_files)
+        image_files = image_files[:20]
+
+        for image_path in image_files:
+            total_images_displayed += 1
+            logging.info(f"Total images displayed: {total_images_displayed}")
+            if total_images_displayed % 10 == 0:
+                generate_time_image()
+            else:
+                serve_image(image_path)
+            time.sleep(time_interval)
+
+def generate_time_image():
+    current_time = time.strftime("%I:%M").lstrip("0")
+    logging.info(f"Generating time image: {current_time}")
+    img = Image.new('RGB', (1200, 900), color=(0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"  # Common font path
+    try:
+        font = ImageFont.truetype(font_path, 205)  # 20% smaller than 256
+    except IOError:
+        font = ImageFont.load_default()
+    text_width, text_height = draw.textsize(current_time, font=font)
+    text_x = (img.width - text_width) // 2
+    text_y = (img.height - text_height) // 2
+    draw.text((text_x, text_y), current_time, font=font, fill=(255, 255, 255))
+    img.save('/tmp/resized_image.jpg')
+    logging.info("Time image generated and saved to /tmp/resized_image.jpg")
+
+def serve_image(image_path):
+    try:
+        logging.info(f"Serving image: {image_path}")
+        img = Image.open(image_path)
+
+        # Validate image dimensions
+        width, height = img.size
+        if width == 0 or height == 0:
+            raise ValueError(f"Invalid image dimensions for {image_path}: width={width}, height={height}")
+
+        # Preserve the aspect ratio
+        aspect_ratio = width / height
+        new_width = 1200
+        new_height = int(new_width / aspect_ratio)
+
+        if new_height > 900:
+            new_height = 900
+            new_width = int(new_height * aspect_ratio)
+
+        if new_width <= 0 or new_height <= 0:
+            raise ValueError(f"Calculated invalid dimensions for {image_path}: new_width={new_width}, new_height={new_height}")
+
+        img = img.resize((new_width, new_height), Image.ANTIALIAS)
+        
+        # Create a new image with a black background
+        new_img = Image.new('RGB', (1200, 900), (0, 0, 0))
+        new_img.paste(img, ((1200 - new_width) // 2, (900 - new_height) // 2))
+        
+        new_img.save('/tmp/resized_image.jpg')
+        logging.info("Resized image saved to /tmp/resized_image.jpg")
+    except Exception as e:
+        logging.error(f"Error processing image {image_path}: {e}")
+        return
+
+def run_server(port=8000):
+    server_address = ('', port)
+    httpd = HTTPServer(server_address, SlideshowHTTPRequestHandler)
+    logging.info(f"Serving on port {port}")
+    httpd.serve_forever()
+
+if __name__ == "__main__":
+    with open(os.path.expanduser('~/bin/slideshowDirectories.txt')) as f:
+        directories = [line.strip().strip('"') for line in f.readlines()]
+
+    # Exclude the specified directory and its subdirectories
+    directories = [d for d in directories if "/media/Entertainment/Photos/GIMP-Edits" not in d]
+
+    threading.Thread(target=generate_slideshow_images, args=(directories, 5), daemon=True).start()
+    run_server()
+

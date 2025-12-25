@@ -1,0 +1,12 @@
+slideshowV3-0 documentation
+~/MyProjects/python/slideshow/
+├── slideshow.py                    # Main server (V3.0)
+├── slideshowGetDirectories.py      # Directory scanner
+├── slideshow_user_guide.txt        # Updated guide
+├── slideshowDirectories.txt        # Auto-generated full list
+├── slideshowPreferredDurand.txt    # Guest list example
+├── slideshowPreferredLong.txt      # Guest list example
+└── slideshow.sh                    # Local test script (optional)
+
+~/bin/
+└── slideshow                       # Smart wrapper (only file in $PATH)

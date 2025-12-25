@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+ 
+import os
+import random
+import webbrowser
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+from PIL import Image
+
+class SlideshowHTTPRequestHandler(SimpleHTTPRequestHandler):
+    current_directory = 0
+    current_image = 0
+    image_files = []
+
+    @classmethod
+    def update_image_files(cls, directories):
+        cls.image_files = []
+        for directory in directories:
+            files = [os.path.join(directory, f) for f in os.listdir(directory) if f.lower().endswith('.jpg')]
+            random.shuffle(files)
+            cls.image_files.extend(files[:20])
+        print(f"Updated image files: {cls.image_files}")
+    
+    def __init__(self, *args, directories=None, **kwargs):
+        self.directories = directories
+        super().__init__(*args, **kwargs)
+    
+    def do_GET(self):
+        if self.path == '/slideshow':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            html_content = '''
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Image Slideshow</title>
+                <style>
+                    body {{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                        background-color: #000;
+                        color: #fff;
+                    }}
+                    img {{
+                        max-width: 100%;
+                        max-height: 100%;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+                    <img src="/current_image" alt="Slideshow Image">
+                </div>
+                <script>
+                    setTimeout(function() {{
+                        window.location.href = '/slideshow';
+                    }}, 5000);
+                </script>
+            </body>
+            </html>
+            '''
+            self.wfile.write(html_content.encode('utf-8'))
+        elif self.path == '/current_image':
+            if SlideshowHTTPRequestHandler.current_image >= len(SlideshowHTTPRequestHandler.image_files):
+                SlideshowHTTPRequestHandler.current_image = 0
+                random.shuffle(SlideshowHTTPRequestHandler.image_files)
+            image_path = SlideshowHTTPRequestHandler.image_files[SlideshowHTTPRequestHandler.current_image]
+            print(f"Attempting to serve image: {image_path} (index: {SlideshowHTTPRequestHandler.current_image})")
+            SlideshowHTTPRequestHandler.current_image += 1
+            if os.path.isfile(image_path):
+                resized_image_path = self.resize_image(image_path)
+                self.send_response(200)
+                self.send_header('Content-type', 'image/jpeg')
+                self.end_headers()
+                with open(resized_image_path, 'rb') as file:
+                    self.wfile.write(file.read())
+            else:
+                print(f"File not found: {image_path}")
+                self.send_error(404, "File not found")
+        else:
+            self.send_error(404, "File not found")
+
+    def resize_image(self, image_path):
+        max_width = 1200
+        max_height = 900
+        img = Image.open(image_path)
+        img.thumbnail((max_width, max_height), Image.ANTIALIAS)
+        resized_path = '/tmp/resized_image.jpg'
+        img.save(resized_path, "JPEG")
+        return resized_path
+
+def run_server(directories, port=8000):
+    SlideshowHTTPRequestHandler.update_image_files(directories)
+    handler_class = lambda *args, **kwargs: SlideshowHTTPRequestHandler(*args, directories=directories, **kwargs)
+    server = HTTPServer(('', port), handler_class)
+    print(f"Serving on port {port}")
+    webbrowser.open(f'http://localhost:{port}/slideshow')
+    server.serve_forever()
+
+def main():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    directories_file = os.path.join(script_dir, 'slideshowDirectories.txt')
+
+    if not os.path.isfile(directories_file):
+        print(f"Directories file not found: {directories_file}")
+        return
+
+    with open(directories_file, 'r') as file:
+        directories = [line.strip().strip('"') for line in file if line.strip() and not line.startswith('#')]
+
+    print(f"Read directories: {directories}")
+
+    directories = [os.path.expanduser(dir) for dir in directories if os.path.isdir(os.path.expanduser(dir))]
+
+    print(f"Valid directories: {directories}")
+
+    if not directories:
+        print("No valid directories found in the directories file.")
+        return
+
+    run_server(directories)
+
+if __name__ == "__main__":
+    main()
+

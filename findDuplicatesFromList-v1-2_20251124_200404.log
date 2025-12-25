@@ -1,0 +1,107 @@
+# findDuplicatesFromList-v1-2 log
+# Started: 2025-11-24 20:04:04.143792
+
+Error: missing <search_root>.
+
+
+findDuplicatesFromList-v1-2.py - Find and move duplicates for files in duplicates.txt (v1-2)
+
+DESCRIPTION
+    Version: v1-2
+
+    This script reads a file named 'duplicates.txt' from the SAME directory
+    as this script. Each non-empty line in duplicates.txt must be a FULL
+    ABSOLUTE PATH to an image file, for example:
+
+        /media/Entertainment/Photos/.../20220719_123737.jpg
+        /media/Entertainment/Photos/.../20220719_142417.jpg
+        ...
+
+    You pass a BASE SEARCH ROOT as arg1 (e.g.
+        /media/Entertainment/Photos/PictureAlbums
+    ) and the script will, for EACH UNIQUE BASENAME from duplicates.txt:
+
+      • Use the Linux `find` command to locate ALL files under <search_root>
+        whose BASENAME matches that name, while skipping any directory named
+        exactly 'slideshow_exclude'.
+
+      • Select a SINGLE "canonical original" to keep in place:
+          - Prefer the first path from duplicates.txt that:
+                (a) has that basename
+                (b) is found under <search_root>
+                (c) exists at the time of processing.
+          - If none of the duplicates.txt entries qualify, fall back to the
+            first path returned by `find`.
+
+      • For every other matched path under <search_root> (excluding the
+        canonical original), the script MOVES that file into a directory
+        named 'slideshow_exclude' located in the SAME DIRECTORY where that
+        duplicate file originally lived.
+
+        Example:
+            Duplicate path:
+                /path/to/album/20220719_123737.jpg
+
+            Target directory:
+                /path/to/album/slideshow_exclude/
+
+            Final moved path:
+                /path/to/album/slideshow_exclude/20220719_123737.jpg
+
+      • Directories named exactly 'slideshow_exclude' are PRUNED from the
+        `find` walk and never scanned for matches.
+
+      • If a file with the same name already exists inside slideshow_exclude,
+        a numeric suffix is appended before the extension:
+            name.jpg -> name_1.jpg, name_2.jpg, etc.
+
+    IMPORTANT BEHAVIOR (same as v1-1)
+      • Only ONE canonical original per BASENAME is guaranteed to be kept
+        in place. All other matching paths under <search_root> with that
+        basename may be moved, even if they also appear in duplicates.txt.
+
+    TRACKING / SUMMARY
+      • As it runs, the script tracks:
+          - Every slideshow_exclude directory it CREATED.
+          - Every file it MOVED (source -> destination).
+      • At completion, it prints:
+          - A summary of created slideshow_exclude directories.
+          - All moves (src -> dest).
+          - A FINAL GROUPED REPORT:
+
+                <basename>
+                    <path1_from_duplicates.txt>
+                    <path2_from_duplicates.txt>
+
+                <next_basename>
+                    <...>
+
+        This grouped report is based on the paths stored in duplicates.txt
+        (originals_by_name), NOT on the post-move filesystem state.
+
+    LOGGING
+      • All output that goes to the screen is also written to a log file in
+        the same directory as this script.
+      • Log filename format:
+            findDuplicatesFromList-v1-2_YYYYMMDD_HHMMSS.log
+
+USAGE
+    findDuplicatesFromList-v1-2.py <search_root>
+
+EXAMPLE
+    # 1) Build duplicates.txt from a specific album:
+    #    (done by makeDuplicatesTXT-*.py)
+    #
+    # 2) Move duplicates for those files elsewhere in the library:
+    findDuplicatesFromList-v1-2.py /media/Entertainment/Photos/PictureAlbums
+
+OPTIONS
+    <search_root>   REQUIRED. Root directory tree to search for duplicates.
+    --version       Show version and exit.
+
+EXIT CODES
+    0  Success
+    1  Missing search_root / usage error
+    2  search_root not found or not a directory
+    3  duplicates.txt missing or unreadable
+

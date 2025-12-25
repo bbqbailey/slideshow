@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+
+import os
+import http.server
+import socketserver
+import webbrowser
+import argparse
+import signal
+import sys
+import threading
+import time
+import random
+
+def generate_html(image_files, interval_time):
+    # Generate a JavaScript array of image file paths without extra quotes
+    image_files_js_array = "[" + ", ".join([f'"{file}"' for file in image_files]) + "]"
+    
+    html_content = f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Image Slideshow</title>
+        <style>
+            body {{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #000;
+                color: #fff;
+                font-size: 5em;
+            }}
+            img {{
+                max-width: 100%;
+                max-height: 100%;
+            }}
+            #time {{
+                display: none;
+                font-size: 5em; /* Set font size to 5em */
+            }}
+        </style>
+    </head>
+    <body>
+        <img id="slideshow" src="" alt="Slideshow Image">
+        <div id="time"></div>
+        <script>
+            const images = {image_files_js_array};
+
+            let currentIndex = 0;
+            const slideshowElement = document.getElementById('slideshow');
+            const timeElement = document.getElementById('time');
+            let imagesShown = 0;
+
+            function showNextImage() {{
+                slideshowElement.style.display = 'block';
+                timeElement.style.display = 'none';
+                slideshowElement.src = images[currentIndex];
+                currentIndex = (currentIndex + 1) % images.length;
+                imagesShown++;
+                if (imagesShown < 10) {{
+                    setTimeout(showNextImage, intervalTime);
+                }} else {{
+                    setTimeout(showTime, intervalTime);
+                }}
+            }}
+
+            function showTime() {{
+                const now = new Date();
+                const hours = now.getHours() % 12 || 12; // Convert to 12-hour format
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const timeString = `${{hours}}:${{minutes}}`;
+                slideshowElement.style.display = 'none';
+                timeElement.style.display = 'block';
+                timeElement.textContent = timeString;
+                imagesShown = 0; // Reset the image counter after showing the time
+                setTimeout(showNextImage, intervalTime);
+            }}
+
+            const intervalTime = {interval_time}; // Display time
+            showNextImage();
+        </script>
+    </body>
+    </html>
+    """
+    return html_content
+
+def start_server(directory, interval_time, port=8000):
+    os.chdir(directory)
+    image_files = [file for file in os.listdir(directory) if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff'))]
+    if not image_files:
+        print("No image files found in the specified directory.")
+        return
+
+    # Shuffle the image files list for random display
+    random.shuffle(image_files)
+
+    html_content = generate_html(image_files, interval_time)
+    with open("index.html", "w") as f:
+        f.write(html_content)
+
+    handler = http.server.SimpleHTTPRequestHandler
+
+    with socketserver.TCPServer(("", port), handler) as httpd:
+        def signal_handler(sig, frame):
+            print('Stopping server...')
+            httpd.shutdown()
+            print('Server stopped.')
+            sys.exit(0)
+
+        signal.signal(signal.SIGINT, signal_handler)
+
+        # Run the server in a separate thread to allow it to be shut down gracefully
+        server_thread = threading.Thread(target=httpd.serve_forever)
+        server_thread.start()
+
+        print(f"Serving at port {port}")
+        webbrowser.open(f'http://localhost:{port}')
+
+        try:
+            while server_thread.is_alive():
+                time.sleep(1)
+        except KeyboardInterrupt:
+            print('Keyboard interrupt received, shutting down the server.')
+            httpd.shutdown()
+            server_thread.join()
+            print('Server shut down.')
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Start a web-based slideshow from a specified directory.")
+    parser.add_argument('directory', type=str, help="The directory containing the images for the slideshow.")
+    parser.add_argument('--time', type=int, default=5000, help="Time to display each image (in milliseconds).")
+    parser.add_argument('--port', type=int, default=8000, help="Port to serve the slideshow on.")
+    args = parser.parse_args()
+
+    start_server(args.directory, args.time, args.port)
+

@@ -1,0 +1,416 @@
+09:32:39,562 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.0
+09:32:39,563 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - No custom configurators were discovered as a service.
+09:32:39,563 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:39,564 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:39,568 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+09:32:39,568 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+09:32:39,575 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 5 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+09:32:39,575 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:39,576 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:39,576 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+09:32:39,579 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/opt/tastytrade/lib/app/desktop-2.20.0.jar!/logback.xml]
+09:32:39,583 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@266374ef - URL [jar:file:/opt/tastytrade/lib/app/desktop-2.20.0.jar!/logback.xml] is not of type file
+09:32:39,665 |-ERROR in ch.qos.logback.core.model.processor.PropertyModelHandler - Could not find resource [gradle.properties].
+09:32:39,665 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Adding LoggerContextListener of type [ch.qos.logback.classic.jul.LevelChangePropagator] to the object stack
+09:32:39,679 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating DEBUG level on Logger[ROOT] onto the JUL framework
+09:32:39,679 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Starting LoggerContextListener
+09:32:39,680 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [fileout]
+09:32:39,680 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+09:32:39,685 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+09:32:39,728 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@24c4ddae - Will use zip compression
+09:32:39,731 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - Active log file name: /home/superben/.tastytrade/desktop/tastytrade.log
+09:32:39,731 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - File property is set to [/home/superben/.tastytrade/desktop/tastytrade.log]
+09:32:39,732 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [Sentry]
+09:32:39,732 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [io.sentry.logback.SentryAppender]
+09:32:39,767 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [io.sentry.SentryOptions] for [options] property
+09:32:39,803 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.dough] to INFO
+09:32:39,803 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[com.dough] onto the JUL framework
+09:32:39,804 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [tasty] to INFO
+09:32:39,804 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[tasty] onto the JUL framework
+09:32:39,804 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.tastyworks] to INFO
+09:32:39,804 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[com.tastyworks] onto the JUL framework
+09:32:39,804 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.devexperts] to INFO
+09:32:39,804 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[com.devexperts] onto the JUL framework
+09:32:39,804 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to WARN
+09:32:39,804 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating WARN level on Logger[ROOT] onto the JUL framework
+09:32:39,804 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [fileout] to Logger[ROOT]
+09:32:39,804 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [Sentry] to Logger[ROOT]
+09:32:39,804 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@37fb0bed - End of configuration.
+09:32:39,805 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@a82c5f1 - Registering current configuration as safe fallback point
+09:32:39,805 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 229 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+09:32:40,228 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.0
+09:32:40,228 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - No custom configurators were discovered as a service.
+09:32:40,228 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:40,229 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:40,229 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+09:32:40,229 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+09:32:40,230 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 1 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+09:32:40,230 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:40,230 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:40,231 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+09:32:40,231 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml]
+09:32:40,235 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@2e6ba49a - URL [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml] is not of type file
+09:32:40,275 |-ERROR in ch.qos.logback.core.model.processor.PropertyModelHandler - Could not find resource [gradle.properties].
+09:32:40,275 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Adding LoggerContextListener of type [ch.qos.logback.classic.jul.LevelChangePropagator] to the object stack
+09:32:40,278 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.devexperts.dxchartpro] to null
+09:32:40,278 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.devexperts] to null
+09:32:40,278 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.dough] to null
+09:32:40,278 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [tasty] to null
+09:32:40,278 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.tastyworks] to null
+09:32:40,278 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating DEBUG level on Logger[ROOT] onto the JUL framework
+09:32:40,278 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Starting LoggerContextListener
+09:32:40,279 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [fileout]
+09:32:40,279 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+09:32:40,281 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+09:32:40,295 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@4ee33af7 - Will use zip compression
+09:32:40,297 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - Active log file name: /home/superben/.tastytrade/desktop/tastytrade.log
+09:32:40,297 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - File property is set to [/home/superben/.tastytrade/desktop/tastytrade.log]
+09:32:40,297 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [Sentry]
+09:32:40,297 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [io.sentry.logback.SentryAppender]
+09:32:40,328 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [io.sentry.SentryOptions] for [options] property
+09:32:40,340 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.dough] to INFO
+09:32:40,340 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[com.dough] onto the JUL framework
+09:32:40,340 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [tasty] to INFO
+09:32:40,340 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[tasty] onto the JUL framework
+09:32:40,340 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.tastyworks] to INFO
+09:32:40,340 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[com.tastyworks] onto the JUL framework
+09:32:40,340 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.devexperts] to INFO
+09:32:40,340 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[com.devexperts] onto the JUL framework
+09:32:40,340 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to WARN
+09:32:40,340 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating WARN level on Logger[ROOT] onto the JUL framework
+09:32:40,340 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [fileout] to Logger[ROOT]
+09:32:40,341 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [Sentry] to Logger[ROOT]
+09:32:40,341 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@6b04acb2 - End of configuration.
+09:32:40,341 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@18388a3c - Registering current configuration as safe fallback point
+09:32:40,341 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 111 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+09:32:41,664 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.0
+09:32:41,664 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a8a18dd - No custom configurators were discovered as a service.
+09:32:41,664 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a8a18dd - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:41,665 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a8a18dd - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:41,665 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+09:32:41,665 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+09:32:41,666 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a8a18dd - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 1 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+09:32:41,666 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a8a18dd - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:41,666 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a8a18dd - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:41,666 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+09:32:41,666 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml]
+09:32:41,670 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@391805ec - URL [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml] is not of type file
+09:32:41,706 |-ERROR in ch.qos.logback.core.model.processor.PropertyModelHandler - Could not find resource [gradle.properties].
+09:32:41,707 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Adding LoggerContextListener of type [ch.qos.logback.classic.jul.LevelChangePropagator] to the object stack
+09:32:41,709 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@7bdc99f5 - Setting level of jul logger [com.devexperts] to null
+09:32:41,709 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@7bdc99f5 - Setting level of jul logger [com.dough] to null
+09:32:41,709 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@7bdc99f5 - Setting level of jul logger [tasty] to null
+09:32:41,709 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@7bdc99f5 - Setting level of jul logger [com.tastyworks] to null
+09:32:41,709 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@7bdc99f5 - Propagating DEBUG level on Logger[ROOT] onto the JUL framework
+09:32:41,709 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Starting LoggerContextListener
+09:32:41,710 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [fileout]
+09:32:41,710 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+09:32:41,712 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+09:32:41,724 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@3e2db222 - Will use zip compression
+09:32:41,726 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - Active log file name: /home/superben/.tastytrade/desktop/tastytrade.log
+09:32:41,726 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - File property is set to [/home/superben/.tastytrade/desktop/tastytrade.log]
+09:32:41,726 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [Sentry]
+09:32:41,726 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [io.sentry.logback.SentryAppender]
+09:32:41,749 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [io.sentry.SentryOptions] for [options] property
+09:32:41,761 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.dough] to INFO
+09:32:41,761 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@7bdc99f5 - Propagating INFO level on Logger[com.dough] onto the JUL framework
+09:32:41,761 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [tasty] to INFO
+09:32:41,761 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@7bdc99f5 - Propagating INFO level on Logger[tasty] onto the JUL framework
+09:32:41,761 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.tastyworks] to INFO
+09:32:41,761 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@7bdc99f5 - Propagating INFO level on Logger[com.tastyworks] onto the JUL framework
+09:32:41,761 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.devexperts] to INFO
+09:32:41,761 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@7bdc99f5 - Propagating INFO level on Logger[com.devexperts] onto the JUL framework
+09:32:41,761 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to WARN
+09:32:41,761 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@7bdc99f5 - Propagating WARN level on Logger[ROOT] onto the JUL framework
+09:32:41,761 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [fileout] to Logger[ROOT]
+09:32:41,762 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [Sentry] to Logger[ROOT]
+09:32:41,762 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@247b19ca - End of configuration.
+09:32:41,762 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@5db55fcc - Registering current configuration as safe fallback point
+09:32:41,762 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a8a18dd - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 96 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+09:32:55,269 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.0
+09:32:55,270 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - No custom configurators were discovered as a service.
+09:32:55,270 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:55,271 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:55,275 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+09:32:55,275 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+09:32:55,281 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 4 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+09:32:55,281 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:55,282 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:55,282 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+09:32:55,285 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/opt/tastytrade/lib/app/desktop-2.20.0.jar!/logback.xml]
+09:32:55,289 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@266374ef - URL [jar:file:/opt/tastytrade/lib/app/desktop-2.20.0.jar!/logback.xml] is not of type file
+09:32:55,361 |-ERROR in ch.qos.logback.core.model.processor.PropertyModelHandler - Could not find resource [gradle.properties].
+09:32:55,361 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Adding LoggerContextListener of type [ch.qos.logback.classic.jul.LevelChangePropagator] to the object stack
+09:32:55,373 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating DEBUG level on Logger[ROOT] onto the JUL framework
+09:32:55,374 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Starting LoggerContextListener
+09:32:55,374 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [fileout]
+09:32:55,374 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+09:32:55,379 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+09:32:55,415 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@24c4ddae - Will use zip compression
+09:32:55,418 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - Active log file name: /home/superben/.tastytrade/desktop/tastytrade.log
+09:32:55,418 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - File property is set to [/home/superben/.tastytrade/desktop/tastytrade.log]
+09:32:55,418 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [Sentry]
+09:32:55,418 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [io.sentry.logback.SentryAppender]
+09:32:55,446 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [io.sentry.SentryOptions] for [options] property
+09:32:55,482 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.dough] to INFO
+09:32:55,482 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[com.dough] onto the JUL framework
+09:32:55,483 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [tasty] to INFO
+09:32:55,483 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[tasty] onto the JUL framework
+09:32:55,483 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.tastyworks] to INFO
+09:32:55,483 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[com.tastyworks] onto the JUL framework
+09:32:55,483 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.devexperts] to INFO
+09:32:55,483 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[com.devexperts] onto the JUL framework
+09:32:55,483 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to WARN
+09:32:55,483 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating WARN level on Logger[ROOT] onto the JUL framework
+09:32:55,483 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [fileout] to Logger[ROOT]
+09:32:55,483 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [Sentry] to Logger[ROOT]
+09:32:55,483 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@37fb0bed - End of configuration.
+09:32:55,484 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@a82c5f1 - Registering current configuration as safe fallback point
+09:32:55,484 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 202 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+09:32:55,767 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.0
+09:32:55,767 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - No custom configurators were discovered as a service.
+09:32:55,768 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:55,768 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:55,768 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+09:32:55,768 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+09:32:55,769 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 1 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+09:32:55,769 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:55,769 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:55,769 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+09:32:55,770 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml]
+09:32:55,773 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@2e6ba49a - URL [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml] is not of type file
+09:32:55,816 |-ERROR in ch.qos.logback.core.model.processor.PropertyModelHandler - Could not find resource [gradle.properties].
+09:32:55,816 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Adding LoggerContextListener of type [ch.qos.logback.classic.jul.LevelChangePropagator] to the object stack
+09:32:55,819 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.devexperts.dxchartpro] to null
+09:32:55,819 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.devexperts] to null
+09:32:55,819 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.dough] to null
+09:32:55,819 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [tasty] to null
+09:32:55,819 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.tastyworks] to null
+09:32:55,819 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating DEBUG level on Logger[ROOT] onto the JUL framework
+09:32:55,819 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Starting LoggerContextListener
+09:32:55,820 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [fileout]
+09:32:55,820 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+09:32:55,823 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+09:32:55,836 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@4ee33af7 - Will use zip compression
+09:32:55,838 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - Active log file name: /home/superben/.tastytrade/desktop/tastytrade.log
+09:32:55,838 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - File property is set to [/home/superben/.tastytrade/desktop/tastytrade.log]
+09:32:55,838 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [Sentry]
+09:32:55,838 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [io.sentry.logback.SentryAppender]
+09:32:55,861 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [io.sentry.SentryOptions] for [options] property
+09:32:55,874 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.dough] to INFO
+09:32:55,874 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[com.dough] onto the JUL framework
+09:32:55,874 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [tasty] to INFO
+09:32:55,874 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[tasty] onto the JUL framework
+09:32:55,874 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.tastyworks] to INFO
+09:32:55,874 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[com.tastyworks] onto the JUL framework
+09:32:55,874 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.devexperts] to INFO
+09:32:55,874 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[com.devexperts] onto the JUL framework
+09:32:55,874 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to WARN
+09:32:55,874 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating WARN level on Logger[ROOT] onto the JUL framework
+09:32:55,874 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [fileout] to Logger[ROOT]
+09:32:55,874 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [Sentry] to Logger[ROOT]
+09:32:55,874 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@6b04acb2 - End of configuration.
+09:32:55,875 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@18388a3c - Registering current configuration as safe fallback point
+09:32:55,875 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 106 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+09:32:57,050 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.0
+09:32:57,051 |-INFO in ch.qos.logback.classic.util.ContextInitializer@2160d44e - No custom configurators were discovered as a service.
+09:32:57,051 |-INFO in ch.qos.logback.classic.util.ContextInitializer@2160d44e - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:57,051 |-INFO in ch.qos.logback.classic.util.ContextInitializer@2160d44e - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+09:32:57,052 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+09:32:57,052 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+09:32:57,052 |-INFO in ch.qos.logback.classic.util.ContextInitializer@2160d44e - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 1 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+09:32:57,052 |-INFO in ch.qos.logback.classic.util.ContextInitializer@2160d44e - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:57,052 |-INFO in ch.qos.logback.classic.util.ContextInitializer@2160d44e - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+09:32:57,052 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+09:32:57,053 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml]
+09:32:57,056 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@2c78c9a8 - URL [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml] is not of type file
+09:32:57,098 |-ERROR in ch.qos.logback.core.model.processor.PropertyModelHandler - Could not find resource [gradle.properties].
+09:32:57,099 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Adding LoggerContextListener of type [ch.qos.logback.classic.jul.LevelChangePropagator] to the object stack
+09:32:57,102 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@bf5b51e - Setting level of jul logger [com.devexperts] to null
+09:32:57,102 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@bf5b51e - Setting level of jul logger [com.dough] to null
+09:32:57,102 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@bf5b51e - Setting level of jul logger [tasty] to null
+09:32:57,102 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@bf5b51e - Setting level of jul logger [com.tastyworks] to null
+09:32:57,102 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@bf5b51e - Propagating DEBUG level on Logger[ROOT] onto the JUL framework
+09:32:57,102 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Starting LoggerContextListener
+09:32:57,103 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [fileout]
+09:32:57,103 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+09:32:57,106 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+09:32:57,118 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@78720f39 - Will use zip compression
+09:32:57,120 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - Active log file name: /home/superben/.tastytrade/desktop/tastytrade.log
+09:32:57,120 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - File property is set to [/home/superben/.tastytrade/desktop/tastytrade.log]
+09:32:57,120 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [Sentry]
+09:32:57,120 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [io.sentry.logback.SentryAppender]
+09:32:57,148 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [io.sentry.SentryOptions] for [options] property
+09:32:57,165 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.dough] to INFO
+09:32:57,165 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@bf5b51e - Propagating INFO level on Logger[com.dough] onto the JUL framework
+09:32:57,165 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [tasty] to INFO
+09:32:57,165 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@bf5b51e - Propagating INFO level on Logger[tasty] onto the JUL framework
+09:32:57,165 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.tastyworks] to INFO
+09:32:57,165 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@bf5b51e - Propagating INFO level on Logger[com.tastyworks] onto the JUL framework
+09:32:57,165 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.devexperts] to INFO
+09:32:57,165 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@bf5b51e - Propagating INFO level on Logger[com.devexperts] onto the JUL framework
+09:32:57,165 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to WARN
+09:32:57,165 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@bf5b51e - Propagating WARN level on Logger[ROOT] onto the JUL framework
+09:32:57,165 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [fileout] to Logger[ROOT]
+09:32:57,165 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [Sentry] to Logger[ROOT]
+09:32:57,165 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@5f9776dd - End of configuration.
+09:32:57,166 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@3548d10e - Registering current configuration as safe fallback point
+09:32:57,166 |-INFO in ch.qos.logback.classic.util.ContextInitializer@2160d44e - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 114 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+12:05:31,509 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.0
+12:05:31,510 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - No custom configurators were discovered as a service.
+12:05:31,510 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+12:05:31,511 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+12:05:31,515 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+12:05:31,515 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+12:05:31,521 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 4 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+12:05:31,521 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+12:05:31,522 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+12:05:31,522 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+12:05:31,525 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/opt/tastytrade/lib/app/desktop-2.20.0.jar!/logback.xml]
+12:05:31,529 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@266374ef - URL [jar:file:/opt/tastytrade/lib/app/desktop-2.20.0.jar!/logback.xml] is not of type file
+12:05:31,603 |-ERROR in ch.qos.logback.core.model.processor.PropertyModelHandler - Could not find resource [gradle.properties].
+12:05:31,604 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Adding LoggerContextListener of type [ch.qos.logback.classic.jul.LevelChangePropagator] to the object stack
+12:05:31,619 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating DEBUG level on Logger[ROOT] onto the JUL framework
+12:05:31,619 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Starting LoggerContextListener
+12:05:31,620 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [fileout]
+12:05:31,620 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+12:05:31,625 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+12:05:31,670 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@24c4ddae - Will use zip compression
+12:05:31,674 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - Active log file name: /home/superben/.tastytrade/desktop/tastytrade.log
+12:05:31,674 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - File property is set to [/home/superben/.tastytrade/desktop/tastytrade.log]
+12:05:31,674 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [Sentry]
+12:05:31,674 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [io.sentry.logback.SentryAppender]
+12:05:31,708 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [io.sentry.SentryOptions] for [options] property
+12:05:31,750 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.dough] to INFO
+12:05:31,750 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[com.dough] onto the JUL framework
+12:05:31,750 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [tasty] to INFO
+12:05:31,750 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[tasty] onto the JUL framework
+12:05:31,750 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.tastyworks] to INFO
+12:05:31,750 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[com.tastyworks] onto the JUL framework
+12:05:31,750 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.devexperts] to INFO
+12:05:31,750 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating INFO level on Logger[com.devexperts] onto the JUL framework
+12:05:31,750 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to WARN
+12:05:31,750 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13b3d178 - Propagating WARN level on Logger[ROOT] onto the JUL framework
+12:05:31,750 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [fileout] to Logger[ROOT]
+12:05:31,750 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [Sentry] to Logger[ROOT]
+12:05:31,750 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@37fb0bed - End of configuration.
+12:05:31,751 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@a82c5f1 - Registering current configuration as safe fallback point
+12:05:31,751 |-INFO in ch.qos.logback.classic.util.ContextInitializer@5d99c6b5 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 229 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+12:05:32,027 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.0
+12:05:32,028 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - No custom configurators were discovered as a service.
+12:05:32,028 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+12:05:32,028 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+12:05:32,029 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+12:05:32,029 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+12:05:32,029 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 1 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+12:05:32,029 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+12:05:32,029 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+12:05:32,029 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+12:05:32,030 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml]
+12:05:32,032 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@2e6ba49a - URL [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml] is not of type file
+12:05:32,074 |-ERROR in ch.qos.logback.core.model.processor.PropertyModelHandler - Could not find resource [gradle.properties].
+12:05:32,074 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Adding LoggerContextListener of type [ch.qos.logback.classic.jul.LevelChangePropagator] to the object stack
+12:05:32,076 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.devexperts.dxchartpro] to null
+12:05:32,076 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.devexperts] to null
+12:05:32,076 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.dough] to null
+12:05:32,076 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [tasty] to null
+12:05:32,076 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Setting level of jul logger [com.tastyworks] to null
+12:05:32,076 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating DEBUG level on Logger[ROOT] onto the JUL framework
+12:05:32,076 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Starting LoggerContextListener
+12:05:32,077 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [fileout]
+12:05:32,077 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+12:05:32,080 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+12:05:32,092 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@4ee33af7 - Will use zip compression
+12:05:32,094 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - Active log file name: /home/superben/.tastytrade/desktop/tastytrade.log
+12:05:32,094 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - File property is set to [/home/superben/.tastytrade/desktop/tastytrade.log]
+12:05:32,094 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [Sentry]
+12:05:32,094 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [io.sentry.logback.SentryAppender]
+12:05:32,116 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [io.sentry.SentryOptions] for [options] property
+12:05:32,128 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.dough] to INFO
+12:05:32,128 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[com.dough] onto the JUL framework
+12:05:32,128 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [tasty] to INFO
+12:05:32,128 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[tasty] onto the JUL framework
+12:05:32,128 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.tastyworks] to INFO
+12:05:32,128 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[com.tastyworks] onto the JUL framework
+12:05:32,128 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.devexperts] to INFO
+12:05:32,128 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating INFO level on Logger[com.devexperts] onto the JUL framework
+12:05:32,128 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to WARN
+12:05:32,128 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@5f5b5ca4 - Propagating WARN level on Logger[ROOT] onto the JUL framework
+12:05:32,128 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [fileout] to Logger[ROOT]
+12:05:32,128 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [Sentry] to Logger[ROOT]
+12:05:32,128 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@6b04acb2 - End of configuration.
+12:05:32,129 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@18388a3c - Registering current configuration as safe fallback point
+12:05:32,129 |-INFO in ch.qos.logback.classic.util.ContextInitializer@62a8fd44 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 100 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+12:05:33,385 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.0
+12:05:33,385 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a3135e9 - No custom configurators were discovered as a service.
+12:05:33,385 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a3135e9 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+12:05:33,386 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a3135e9 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+12:05:33,386 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+12:05:33,386 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+12:05:33,386 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a3135e9 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 0 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+12:05:33,386 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a3135e9 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+12:05:33,386 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a3135e9 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+12:05:33,386 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+12:05:33,386 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml]
+12:05:33,389 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@303da8b4 - URL [jar:file:/home/superben/.tastytrade/desktop/2.36.0/desktop-2.36.0.jar!/logback.xml] is not of type file
+12:05:33,425 |-ERROR in ch.qos.logback.core.model.processor.PropertyModelHandler - Could not find resource [gradle.properties].
+12:05:33,425 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Adding LoggerContextListener of type [ch.qos.logback.classic.jul.LevelChangePropagator] to the object stack
+12:05:33,427 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3dedb876 - Setting level of jul logger [com.devexperts] to null
+12:05:33,427 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3dedb876 - Setting level of jul logger [com.dough] to null
+12:05:33,427 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3dedb876 - Setting level of jul logger [tasty] to null
+12:05:33,427 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3dedb876 - Setting level of jul logger [com.tastyworks] to null
+12:05:33,427 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3dedb876 - Propagating DEBUG level on Logger[ROOT] onto the JUL framework
+12:05:33,427 |-INFO in ch.qos.logback.classic.model.processor.LoggerContextListenerModelHandler - Starting LoggerContextListener
+12:05:33,428 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [fileout]
+12:05:33,428 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+12:05:33,431 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+12:05:33,443 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@699d0270 - Will use zip compression
+12:05:33,444 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - Active log file name: /home/superben/.tastytrade/desktop/tastytrade.log
+12:05:33,444 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[fileout] - File property is set to [/home/superben/.tastytrade/desktop/tastytrade.log]
+12:05:33,445 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [Sentry]
+12:05:33,445 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [io.sentry.logback.SentryAppender]
+12:05:33,468 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [io.sentry.SentryOptions] for [options] property
+12:05:33,479 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.dough] to INFO
+12:05:33,479 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3dedb876 - Propagating INFO level on Logger[com.dough] onto the JUL framework
+12:05:33,479 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [tasty] to INFO
+12:05:33,479 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3dedb876 - Propagating INFO level on Logger[tasty] onto the JUL framework
+12:05:33,480 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.tastyworks] to INFO
+12:05:33,480 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3dedb876 - Propagating INFO level on Logger[com.tastyworks] onto the JUL framework
+12:05:33,480 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [com.devexperts] to INFO
+12:05:33,480 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3dedb876 - Propagating INFO level on Logger[com.devexperts] onto the JUL framework
+12:05:33,480 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to WARN
+12:05:33,480 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3dedb876 - Propagating WARN level on Logger[ROOT] onto the JUL framework
+12:05:33,480 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [fileout] to Logger[ROOT]
+12:05:33,480 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [Sentry] to Logger[ROOT]
+12:05:33,480 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@2a40ecd7 - End of configuration.
+12:05:33,480 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@77e59923 - Registering current configuration as safe fallback point
+12:05:33,480 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4a3135e9 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 94 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007f67088693fc, pid=457157, tid=457206
+#
+# JRE version: Java(TM) SE Runtime Environment (21.0.5+9) (build 21.0.5+9-LTS-239)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (21.0.5+9-LTS-239, mixed mode, tiered, compressed oops, compressed class ptrs, g1 gc, linux-amd64)
+# Problematic frame:
+# C  [libc.so.6+0x453fc]
+#
+# Core dump will be written. Default location: Core dumps may be processed with "/usr/share/apport/apport -p%p -s%s -c%c -d%d -P%P -u%u -g%g -F%F -- %E" (or dumping to /home/superben/myProjects/python/slideshow/core.457157)
+#
+# An error report file with more information is saved as:
+# /home/superben/myProjects/python/slideshow/hs_err_pid457157.log
+#
+# If you would like to submit a bug report, please visit:
+#   https://bugreport.java.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
