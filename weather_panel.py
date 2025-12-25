@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-# weather_panel_v1-1.py
+# weather_panel.py Version 2.0
+#
+#V2:
+# - show data failure when fail to fetch weather data
 #
 # v1-1:
 # - Reduce font size for "Conditions Today" and "Conditions Tomorrow" values only
@@ -51,6 +54,9 @@ UNITS = "imperial"
 
 # Base key (the one you confirmed with curl)
 OPENWEATHER_API_KEY = "96a0cc9aa818fd23c80c4ba5321c2194"
+
+LAST_GOOD_UPDATE = None #used for tracking in case of weather update failure
+LAST_FAILURE = None     #same as above
 
 # Optional override from environment
 env_key = os.getenv("OPENWEATHER_API_KEY")
@@ -233,6 +239,62 @@ def create_panel_image(weather):
     font_conditions = load_font(60, bold=True)   # NEW: smaller font
     font_small = load_font(30, bold=False)
 
+    # NEW: Weather unavailable fonts (BIG)
+    font_unavail_title = load_font(140, bold=True)
+    font_unavail_body  = load_font(60,  bold=True)
+
+    # ---------------------------------------------------------
+    # WEATHER UNAVAILABLE MODE (BIG TEXT, NO NORMAL LAYOUT)
+    # ---------------------------------------------------------
+    if weather.get("headline") == "Weather Unavailable":
+        title_text = "WEATHER UNAVAILABLE"
+        body_text = weather.get("details", "")
+
+        # Center title horizontally
+        bbox = draw.textbbox((0, 0), title_text, font=font_unavail_title)
+        tw = bbox[2] - bbox[0]
+        th = bbox[3] - bbox[1]
+        title_x = (IMG_WIDTH - tw) // 2
+        title_y = 200
+
+        draw.text(
+            (title_x, title_y),
+            title_text,
+            font=font_unavail_title,
+            fill=(255, 255, 255),
+        )
+
+        # Body text (timestamps), centered and large
+        bbox = draw.multiline_textbbox(
+            (0, 0),
+            body_text,
+            font=font_unavail_body,
+            spacing=20,
+        )
+        bw = bbox[2] - bbox[0]
+        bh = bbox[3] - bbox[1]
+        body_x = (IMG_WIDTH - bw) // 2
+        body_y = title_y + th + 80
+
+        draw.multiline_text(
+            (body_x, body_y),
+            body_text,
+            font=font_unavail_body,
+            fill=(220, 220, 220),
+            spacing=20,
+            align="center",
+        )
+
+        # Write PNG and exit
+        buf = BytesIO()
+        img.save(buf, format="PNG")
+        with open(OUTPUT_PNG, "wb") as f:
+            f.write(buf.getvalue())
+
+        logging.info(f"Weather unavailable panel image updated: {OUTPUT_PNG}")
+        return
+
+
     # ------------------ TOP: TEMPERATURE ------------------
     temp_text = f"{weather.get('temp_f', 'NA')}°"
     bbox = draw.textbbox((0, 0), temp_text, font=font_temp)
@@ -355,15 +417,66 @@ def create_panel_image(weather):
 def update_weather_once():
     """Fetch One Call data, update summary, PNG, and shared state."""
     global LATEST_SUMMARY, LATEST_RAW, LAST_UPDATED
+    global LAST_GOOD_UPDATE, LAST_FAILURE
+
 
     try:
         logging.info(f"Fetching One Call 3.0 data: {ONECALL_URL}")
         resp = requests.get(ONECALL_URL, timeout=10)
         resp.raise_for_status()
         data = resp.json()
-    except Exception as e:
-        logging.error(f"Error fetching One Call 3.0 data: {e}")
+
+        # Successful fetch
+        now = datetime.now()
+        summary = extract_weather_summary_from_onecall(data)
+
+        logging.info(f"SUMMARY USED FOR PNG = {summary}")
+
+        create_panel_image(summary)
+
+        with WEATHER_LOCK:
+            LATEST_SUMMARY = summary
+            LATEST_RAW = data
+            LAST_UPDATED = now
+            LAST_GOOD_UPDATE = now
+
+        logging.info("Weather data and shared state updated.")
         return
+
+    except Exception as e:
+        now = datetime.now()
+        LAST_FAILURE = now
+
+        logging.error(f"Error fetching One Call 3.0 data: {e}")
+
+        last_good_str = (
+            LAST_GOOD_UPDATE.strftime("%Y-%m-%d %H:%M:%S")
+            if LAST_GOOD_UPDATE else "Unknown"
+        )
+
+        failure_str = now.strftime("%Y-%m-%d %H:%M:%S")
+
+        unavailable_summary = {
+            "headline": "Weather Unavailable",
+            "details": (
+                f"Last good data: {last_good_str}\n"
+                f"Last failure: {failure_str}"
+            ),
+            "temp": "--",
+            "feels_like": "--",
+            "humidity": "--",
+            "wind": "--",
+            "icon": None,
+        }
+
+        try:
+            create_panel_image(unavailable_summary)
+            logging.info("Weather unavailable PNG generated.")
+        except Exception as img_err:
+            logging.error(f"Failed to generate unavailable PNG: {img_err}")
+
+        return
+
 
     summary = extract_weather_summary_from_onecall(data)
     logging.info(f"SUMMARY USED FOR PNG = {summary}")
