@@ -1,3 +1,24 @@
 *.log
 *.png
 
+
+# Logs
+*.log
+*.log.*
+slideshow-display.log*
+slideshow.log*
+
+# One-off analysis outputs / reports
+duplicates_*.txt
+duplicates_report.txt
+
+# Local helper scripts (keep out unless explicitly desired)
+find_slideshow_duplicates.py
+
+# Local backups / scratch
+*.bak
+*.working
+slideshow.py-*
+
+# Misc local folder
+slideshow/
