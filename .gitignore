@@ -23,3 +23,12 @@ slideshow.py-*
 # Misc local folder
 slideshow/
 latestImage/
+
+# Never commit private keys or cert secrets
+certs/*.key
+certs/*.pem
+*.key
+*.pem
+# Explicit
+certs/homelab-ca.key
+certs/hottub.key
